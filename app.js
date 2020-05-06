@@ -34,6 +34,37 @@ const { Movie, Person } = db.models;
     });
     await movie3.save(); // save the record
     console.log(movie3.toJSON());
+
+
+    // Reading Data from database
+
+    const movieById = await Movie.findByPk(11);
+    console.log('Retrieved Data from Database');
+    if (movieById) {
+      console.log(movieById.toJSON());
+    } else {
+      console.log('Record not found!');
+    }
+
+    // Find Specific Record
+    const movieByRuntime = await Movie.findOne({ where: { runtime: 115 } });
+
+    console.log('Specific Record from Database');
+    if (movieByRuntime) {
+      console.log(movieByRuntime.toJSON());
+    } else {
+      console.log('Record not found!');
+    }
+
+
+    // Retrieve all Records
+    console.log('All Movie Records from Database');
+    const movies = await Movie.findAll();
+    if (movies) {
+      console.log(movies.map(movie => movie.toJSON()));
+    } else {
+      console.log('Record not found!');
+    }
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
       const errors = error.errors.map((err) => err.message);
@@ -43,3 +74,23 @@ const { Movie, Person } = db.models;
     }
   }
 })();
+
+// Reading Data from database
+/*
+(async () => {
+  await db.sequelize.sync({ force: true });
+
+  try {
+    const movieById = await Movie.findByPk(1);
+    console.log('Retrieved Data from Database');
+    console.log(movieById.toJSON());
+  } catch (error) {
+    if (error.name === 'SequelizeValidationError') {
+      const errors = error.errors.map((err) => err.message);
+      console.error('Validation errors: ', errors);
+    } else {
+      throw error;
+    }
+  }
+})();
+*/
