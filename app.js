@@ -2,6 +2,7 @@
 const db = require('./db');
 
 const { Movie, Person } = db.models;
+const { Op } = db.Sequelize;
 
 (async () => {
   await db.sequelize.sync({ force: true });
@@ -65,6 +66,32 @@ const { Movie, Person } = db.models;
     } else {
       console.log('Record not found!');
     }
+
+    // Retreive specific columns/attributes
+    console.log('Specific Movie Columns from Database');
+    const movies1 = await Movie.findAll({
+      attributes: ['id', 'title'], // return only id and title
+      where: {
+        isAvailableOnVHS: true,
+        releaseDate: {
+          [Op.gte]: '2004-01-01', // greater than or equal to the date
+        },
+        runtime: {
+          [Op.gt]: 95, // greater than 95
+        },
+      },
+      order: [['id', 'DESC']], // IDs in descending order
+    });
+    console.log(movies1.map(movie => movie.toJSON()));
+
+
+    // Update Operation
+    console.log('Updatea Record from Database');
+    const toyStory3 = await Movie.findByPk(3);
+    toyStory3.isAvailableOnVHS = true;
+    await toyStory3.save();
+
+    console.log(toyStory3.get({ plain: true }));
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
       const errors = error.errors.map((err) => err.message);
