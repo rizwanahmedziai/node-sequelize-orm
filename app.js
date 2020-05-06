@@ -30,7 +30,7 @@ const { Movie, Person } = db.models;
       title: 'Toy Story 3',
       runtime: 103,
       releaseDate: '2010-06-18',
-      // isAvailableOnVHS: false,
+      isAvailableOnVHS: false,
     });
     await movie3.save(); // save the record
     console.log(movie3.toJSON());
