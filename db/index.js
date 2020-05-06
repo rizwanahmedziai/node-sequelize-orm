@@ -1,20 +1,20 @@
 const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize({
-	dialect: 'sqlite',
-	storage: 'movies.db',
-	logging: false,
-	// global options
-	define: {
-		freezeTableName: false,
-		timestamps: false,
-	},
+  dialect: 'sqlite',
+  storage: 'movies.db',
+  logging: false,
+  // global options
+  define: {
+    freezeTableName: false,
+    timestamps: false,
+  },
 });
 
 const db = {
-	sequelize,
-	Sequelize,
-	models: {},
+  sequelize,
+  Sequelize,
+  models: {},
 };
 
 db.models.Movie = require('./models/movie.js')(sequelize);
